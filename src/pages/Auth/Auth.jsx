@@ -10,11 +10,16 @@ export const Auth = () => {
   return (
     <div>
       <form className="form">
-        <div className="form-field"></div>
+        <h2 className="align-self-center fw-400">This is Your Memories</h2>
+        <img
+          src="https://c4.wallpaperflare.com/wallpaper/544/247/609/4k-couple-moments-silhouette-wallpaper-preview.jpg"
+          alt="banner image"
+          className="image-resp"
+        />
 
-        <button className="btn btn-cta align-self-center">
-          <a href={AUTH_URL}>Login with Instagram</a>
-        </button>
+        <a href={AUTH_URL} className="btn btn-cta align-self-center">
+          Login with Instagram
+        </a>
       </form>
     </div>
   );

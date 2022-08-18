@@ -9,6 +9,7 @@ import {
   postUserDataService,
 } from "../../services/userDataServices";
 import { useNavigate, useParams } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 export const Home = ({ code }) => {
   const [accessTokenObj, setAccessTokenObj] = useState({});
   const [userData, setUserData] = useState([]);
@@ -46,16 +47,11 @@ export const Home = ({ code }) => {
   }, [accessTokenObj]);
 
   useEffect(() => {
-    if (Object.keys(userData).length !== 0) {
-    }
-  }, [userData]);
-  useEffect(() => {
     if (userName) {
       const userRef = ref(db, "users/" + userName);
       onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
-          console.log(data);
           setUserData(data);
           navigate(`/${userName}`, { state: data });
         } else {
@@ -65,5 +61,11 @@ export const Home = ({ code }) => {
     }
   }, [userName]);
 
-  return <div>nice</div>;
+  return (
+    <div className="flex-wrap gap-mdm">
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(() => (
+        <Skeleton variant="rectangular" width={300} height={400} />
+      ))}
+    </div>
+  );
 };
