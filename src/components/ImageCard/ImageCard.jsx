@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { postUserDataService } from "../../services/userDataServices";
 
 export const ImageCard = ({ imageData }) => {
   const { id, caption, media_type, media_url, timestamp, username } = imageData;
+
   return (
     <div>
       <img src={media_url} alt="" className="image-resp" />

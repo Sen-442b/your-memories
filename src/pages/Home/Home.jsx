@@ -1,11 +1,20 @@
+import { onValue, ref } from "firebase/database";
+import { collection } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { ImageCard } from "../../components/ImageCard/ImageCard";
+import { db } from "../../firebase";
 import { getAccessTokenService } from "../../services/authService";
-import { getUserDataService } from "../../services/userDataServices";
-
+import {
+  getUserDataService,
+  postUserDataService,
+} from "../../services/userDataServices";
+import { useNavigate, useParams } from "react-router-dom";
 export const Home = ({ code }) => {
   const [accessTokenObj, setAccessTokenObj] = useState({});
   const [userData, setUserData] = useState([]);
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
+  //   const [userDataClient, setUserDataClient] = useState([]);
 
   const getAccessTokenHandler = async (code) => {
     try {
@@ -18,8 +27,10 @@ export const Home = ({ code }) => {
   const getUserDataHandler = async (accessTokenObj) => {
     try {
       const response = await getUserDataService(accessTokenObj.access_token);
-      console.log(response.data);
-      setUserData(response.data);
+      if (response.data) {
+        setUserName(response.data[0]["username"]);
+        postUserDataService(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -27,17 +38,32 @@ export const Home = ({ code }) => {
   useEffect(() => {
     getAccessTokenHandler(code);
   }, []);
+
   useEffect(() => {
     if (accessTokenObj?.access_token) {
       getUserDataHandler(accessTokenObj);
     }
   }, [accessTokenObj]);
-  return (
-    <div>
-      {userData.length !== 0 &&
-        userData.map((imageData) => {
-          return <ImageCard key={imageData.id} imageData={imageData} />;
-        })}
-    </div>
-  );
+
+  useEffect(() => {
+    if (Object.keys(userData).length !== 0) {
+    }
+  }, [userData]);
+  useEffect(() => {
+    if (userName) {
+      const userRef = ref(db, "users/" + userName);
+      onValue(userRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          console.log(data);
+          setUserData(data);
+          navigate(`/${userName}`, { state: data });
+        } else {
+          console.log("No Data Found");
+        }
+      });
+    }
+  }, [userName]);
+
+  return <div>nice</div>;
 };

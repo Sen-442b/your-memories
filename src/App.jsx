@@ -16,6 +16,7 @@ function App() {
   return (
     <div className="width-100 flex-center">
       {code ? <Home code={code} /> : <Auth />}
+      bro
     </div>
   );
 }
