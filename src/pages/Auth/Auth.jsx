@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 const AUTH_URL = `https://api.instagram.com/oauth/authorize?client_id=${
   import.meta.env.VITE_CLIENT_ID
